@@ -1,16 +1,17 @@
 package serveur.document;
 
 
+import serveur.Abonne;
 import serveur.document.exeption.EmpruntException;
 import serveur.document.exeption.ReservationException;
 import serveur.document.exeption.RetourException;
 
 public class Livres implements Document {
-    private int id;
+    private String id;
     private String titre;
     private int nbPages;
 
-    public Livres(int id, String titre, int nbPages) {
+    public Livres(int String, String titre, int nbPages) {
         this.id = id;
         this.titre = titre;
         this.nbPages = nbPages;
@@ -19,7 +20,7 @@ public class Livres implements Document {
 
     @Override
     public String idDoc() {
-        return "";
+        return id;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package serveur.document;
 
+import serveur.Abonne;
 import serveur.document.exeption.EmpruntException;
 import serveur.document.exeption.ReservationException;
 import serveur.document.exeption.RetourException;

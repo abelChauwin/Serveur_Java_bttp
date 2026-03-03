@@ -1,5 +1,7 @@
 package serveur;
 
+import serveur.service.ServiceEmprunt;
+
 import java.io.IOException;
 
 public class Serv {
@@ -8,7 +10,7 @@ public class Serv {
 
 	public static void main(String[] args) {
 		try {
-			new Thread(new ServeurBrette(ServiceBrette.class, PORT)).start();
+			new Thread(new ServeurBrette(ServiceEmprunt.class, PORT)).start();
 			System.out.println("Serveur demarre sur le port " + PORT);
 		} catch (IOException e) {
 			e.printStackTrace();

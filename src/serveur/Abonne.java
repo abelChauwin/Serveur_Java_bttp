@@ -1,4 +1,4 @@
-package serveur.document;
+package serveur;
 
 public class Abonne {
     private int id;

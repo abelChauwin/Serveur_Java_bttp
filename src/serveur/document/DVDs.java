@@ -1,16 +1,17 @@
 package serveur.document;
 
 
+import serveur.Abonne;
 import serveur.document.exeption.EmpruntException;
 import serveur.document.exeption.ReservationException;
 import serveur.document.exeption.RetourException;
 
 public class DVDs implements Document {
-    private int id;
+    private String id;
     private String titre;
     private Boolean adulte;
 
-    public DVDs(int id, String titre, Boolean adulte) {
+    public DVDs(String id, String titre, Boolean adulte) {
         this.id = id;
         this.titre = titre;
         this.adulte = adulte;
@@ -18,7 +19,7 @@ public class DVDs implements Document {
 
     @Override
     public String idDoc() {
-        return "";
+        return id;
     }
 
     @Override
