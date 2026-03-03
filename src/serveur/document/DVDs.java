@@ -12,11 +12,17 @@ import java.util.TimerTask;
 public class DVDs implements Document {
     private String id;
     private String titre;
-    private Boolean adulte;
+    private boolean adulte;
 
-    private Boolean reserve = false;
+    public enum EtatReservation {
+        RESERVE,                  // La réservation est active
+        EN_ATTENTE_FIN,           // La réservation est en cours, fin dans 60 secondes
+        LIBRE         // aucune reservation
+    }
 
-    public DVDs(String id, String titre, Boolean adulte) {
+    private EtatReservation reserve = EtatReservation.LIBRE;
+
+    public DVDs(String id, String titre, boolean adulte) {
         this.id = id;
         this.titre = titre;
         this.adulte = adulte;
@@ -29,25 +35,48 @@ public class DVDs implements Document {
 
     @Override
     public void reservation(Abonne ab) throws ReservationException {
-        if (ab.plusDe16()) {
-            throw new ReservationException("L'abonné doit avoir au moins 18 ans pour réserver.");
-        }
+        synchronized (this) {
+            if ( adulte && !ab.plusDe16()) {
+                throw new ReservationException("L'abonné doit avoir au moins 18 ans pour réserver.");
+            }
+            if (ab.banni()) {
+                throw new ReservationException("L'abonné est banni");
+            }
 
-
-        if (!reserve) {// rajouter le check de l'age de l'abo
-            Timer timer = new Timer();
-            TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    synchronized(DVDs.this) {
-                        reserve = false; // fin de la reservation
+            if (reserve == EtatReservation.LIBRE) {
+                reserve = EtatReservation.RESERVE;
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        synchronized(DVDs.this) {
+                            reserve = EtatReservation.EN_ATTENTE_FIN;
+                            Timer timer2 = new Timer();
+                            TimerTask task2 = new TimerTask() {
+                                @Override
+                                public void run() {
+                                    synchronized(DVDs.this) {
+                                        reserve = EtatReservation.LIBRE;
+                                        notifyAll();
+                                    }
+                                }
+                            };
+                            timer2.schedule(task2, 1000*60);
+                        }
+                    }
+                };
+                timer.schedule(task, 1000*60*60*2 - 1000);
+            } else if (reserve == EtatReservation.RESERVE) {
+                throw new ReservationException("La ressource est déjà réservée.");
+            } else {
+                while (reserve == EtatReservation.EN_ATTENTE_FIN) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
                 }
-            };
-
-            timer.schedule(task, 1000 *60*60 * 2); // delay de 2h
-        }else{
-            throw new ReservationException("La ressource est déjà réservée.");
+            }
         }
     }
 

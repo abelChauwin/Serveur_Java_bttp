@@ -7,7 +7,9 @@ import java.time.format.DateTimeFormatter;
 public class Abonne {
     private int id;
     private String nom;
-    private String dateDeNaissance; // format attendu : "yyyy-MM-dd", ex: "2005-03-03"
+    private String dateDeNaissance;
+
+    private boolean banni;
 
     private static final String FORMAT ="yyyy-MM-dd";
 
@@ -36,5 +38,9 @@ public class Abonne {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMAT);
         LocalDate naissance = LocalDate.parse(dateDeNaissance, formatter);
         return Period.between(naissance, LocalDate.now()).getYears();
+    }
+
+    public boolean banni() {
+        return banni;
     }
 }
