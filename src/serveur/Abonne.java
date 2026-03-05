@@ -20,15 +20,6 @@ public class Abonne {
         this.dateDeNaissance = dateDeNaissance;
     }
 
-    public boolean plusDe16() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMAT);
-        LocalDate naissance = LocalDate.parse(dateDeNaissance, formatter);
-
-        LocalDate aujourdHui = LocalDate.now();
-        int age = Period.between(naissance, aujourdHui).getYears();
-
-        return age >= 16;
-    }
 
     public String getNom() {
         return nom;

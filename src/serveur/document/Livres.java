@@ -6,35 +6,18 @@ import serveur.document.exeption.EmpruntException;
 import serveur.document.exeption.ReservationException;
 import serveur.document.exeption.RetourException;
 
-public class Livres implements Document {
-    private String id;
-    private String titre;
+public class Livres extends DocumentEmpruntable {
+
     private int nbPages;
 
-    public Livres(int String, String titre, int nbPages) {
-        this.id = id;
-        this.titre = titre;
+    public Livres(String id,int String, String titre, int nbPages) {
+        super(id,titre);
         this.nbPages = nbPages;
     }
 
 
     @Override
-    public String idDoc() {
-        return id;
-    }
-
-    @Override
-    public void reservation(Abonne ab) throws ReservationException {
-
-    }
-
-    @Override
-    public void emprunt(Abonne ab) throws EmpruntException {
-
-    }
-
-    @Override
-    public void retour() throws RetourException {
-
+    public void verificationAbonner(Abonne ab) {
+        //pas de verification en plus pour les livres
     }
 }
