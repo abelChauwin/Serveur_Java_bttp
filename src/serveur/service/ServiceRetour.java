@@ -1,5 +1,7 @@
 package serveur.service;
 
+import serveur.LoadElement;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,8 +12,8 @@ public class ServiceRetour extends Service {
 
 	private StringBuffer txt;
 
-	public ServiceRetour(Socket s){
-		super(s);
+	public ServiceRetour(Socket s, LoadElement element) {
+		super(s, element);
 	}
 
 	public void run ( ) {

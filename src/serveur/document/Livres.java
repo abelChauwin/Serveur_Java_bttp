@@ -10,7 +10,7 @@ public class Livres extends DocumentEmpruntable {
 
     private int nbPages;
 
-    public Livres(String id,int String, String titre, int nbPages) {
+    public Livres(String id, String titre, int nbPages) {
         super(id,titre);
         this.nbPages = nbPages;
     }

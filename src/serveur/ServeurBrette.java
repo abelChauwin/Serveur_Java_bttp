@@ -10,11 +10,12 @@ import java.net.Socket;
 public class ServeurBrette implements Runnable {
 	private ServerSocket listen_socket;
 	private Class<? extends Service> service;
-
+	private LoadElement element;
 	
-	public ServeurBrette(Class<? extends Service> clas ,int port) throws IOException {
+	public ServeurBrette(Class<? extends Service> clas , int port, LoadElement element) throws IOException {
 			listen_socket = new ServerSocket(port);
 			service=clas;
+			this.element=element;
 	}
 
 	public void run() {
@@ -30,7 +31,7 @@ public class ServeurBrette implements Runnable {
 				System.out.println(" Port distant : "+client_socket.getPort());
 				
 				try {
-					new Thread(service.getConstructor(Socket.class).newInstance(client_socket) ).start();
+					new Thread(service.getConstructor(Socket.class).newInstance(client_socket,element) ).start();
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 					e.printStackTrace();

@@ -1,5 +1,7 @@
 package serveur.service;
 
+import serveur.LoadElement;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,8 +12,8 @@ public class ServiceEmprunt extends Service {
 
 	private StringBuffer txt;
 
-	public ServiceEmprunt(Socket s){
-		super(s);
+	public ServiceEmprunt(Socket s, LoadElement element) {
+		super(s,element);
 	}
 
 	public void run ( ) {
@@ -20,7 +22,7 @@ public class ServiceEmprunt extends Service {
 			BufferedReader sin = new BufferedReader (new InputStreamReader(socket.getInputStream ( )));
 			PrintWriter sout = new PrintWriter (socket.getOutputStream ( ), true);
 
-			txt = new StringBuffer("Tapez une chaîne de caractères\npetit retour a la ligne pour le flex");
+			txt = new StringBuffer("Bienvenue sur la Borne d'emprunt\nvous pouvez emprunter un document reserver au prealable\npour ce faire tapez: ID_document ID_Abonne");
 
 			while(true) {
 
@@ -33,7 +35,7 @@ public class ServiceEmprunt extends Service {
 					break;
 				}
 				// ici effectuer la tache du service
-				txt = line.reverse();
+
 
 
 			}

@@ -7,7 +7,7 @@ public class DVDS extends DocumentEmpruntable{
     private boolean adulte;
     public final static int AGE_ADULTE = 16;
 
-    public DVDS(String id,int String, String titre, boolean adulte) {
+    public DVDS(String id, String titre, boolean adulte) {
         super(id,titre);
         this.adulte = adulte;
     }

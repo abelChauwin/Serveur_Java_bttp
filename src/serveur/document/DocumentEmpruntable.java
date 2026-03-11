@@ -10,19 +10,22 @@ import java.util.TimerTask;
 
 public abstract class DocumentEmpruntable implements Document {
 
+    public final static int TEMPS_RESERV = 1000 * 60 * 60 * 2;
+    public final static int TEMPS_ATTENTE = 1000 * 60;
+    public final static int TEMPS_RETOUR = 1000 * 60 * 60 * 24 * 7 * 2;
+
     private String id;
     private String titre;
 
     private Abonne abonne;
-
     private EtatReservation reserve = EtatReservation.LIBRE;
 
     private final Timer timer = new Timer();
     private TimerTask taskReservation;
     private TimerTask taskAttente;
+    private TimerTask taskRetour;
 
-    public final static int TEMPS_RESERV = 1000 * 60 * 60 * 2;
-    public final static int TEMPS_ATTENTE = 1000 * 60;
+
 
     public enum EtatReservation {
         EMPRUNTER,
@@ -34,6 +37,7 @@ public abstract class DocumentEmpruntable implements Document {
     public DocumentEmpruntable(String id, String titre) {
         this.id = id;
         this.titre = titre;
+        planifierExpiration();
     }
 
     @Override
@@ -53,7 +57,7 @@ public abstract class DocumentEmpruntable implements Document {
         if (reserve == EtatReservation.LIBRE) {
             abonne = ab;
             reserve = EtatReservation.RESERVE;
-            planifierExpiration();
+            timer.schedule(taskReservation, TEMPS_RESERV - TEMPS_ATTENTE);
         }else if (reserve == EtatReservation.EMPRUNTER || reserve == EtatReservation.RESERVE) {
             throw new ReservationException("Le DVD n'est pas disponible.");
         }
@@ -71,7 +75,14 @@ public abstract class DocumentEmpruntable implements Document {
         annulerTimers();
         reserve = EtatReservation.EMPRUNTER;
 
-        // TODO lancer un timer pour le retour
+
+        taskRetour = new TimerTask() {
+            @Override
+            public void run() {
+                ab.bannir();
+            }
+        };
+        timer.schedule(taskRetour, TEMPS_RETOUR );
     }
 
     @Override
@@ -80,10 +91,10 @@ public abstract class DocumentEmpruntable implements Document {
         if (reserve != EtatReservation.EMPRUNTER) {
             throw new RetourException("Le DVD n'est pas emprunté.");
         }
+        taskRetour.cancel();
         reserve = EtatReservation.LIBRE;
         abonne = null;
     }
-
 
 
     private void planifierExpiration() {
@@ -110,18 +121,11 @@ public abstract class DocumentEmpruntable implements Document {
                 }
             }
         };
-        timer.schedule(taskReservation, TEMPS_RESERV - TEMPS_ATTENTE);
     }
 
     private void annulerTimers() {
-
-        if (taskReservation != null) {
             taskReservation.cancel();
-        }
-
-        if (taskAttente != null) {
             taskAttente.cancel();
-        }
     }
     @Override
     public String idDoc() {

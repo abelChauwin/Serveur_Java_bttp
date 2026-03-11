@@ -11,7 +11,7 @@ public class Abonne {
 
     private boolean banni;
 
-    private static final String FORMAT ="yyyy-MM-dd";
+    private static final String FORMAT ="dd-MM-yyyy";
 
     // Constructeur
     public Abonne(int id, String nom, String dateDeNaissance) {
@@ -33,5 +33,9 @@ public class Abonne {
 
     public boolean banni() {
         return banni;
+    }
+
+    public void bannir() {
+        banni=true;
     }
 }
