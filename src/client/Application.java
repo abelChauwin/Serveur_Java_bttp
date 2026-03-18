@@ -6,11 +6,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 class Application {
-	
 
+	private final static int PORT_RESERV = 2000;
+	private final static int PORT_EMPRUNT= 2001;
+	private final static int PORT_RETOUR= 2002;
+	private static List<Integer> ports = List.of(PORT_RESERV, PORT_EMPRUNT, PORT_RETOUR);
 
 	public static void main(String[] args) {
 		Socket socket = null;		
@@ -20,22 +24,25 @@ class Application {
 			String HOST;
 			Scanner sc = new Scanner(System.in);
 			
-			System.out.println("quelle url");
+			System.out.println("Saisir une url :");
 			
 			while(true) {
 			    String i = sc.nextLine();
 			    String[] tab = i.split(":");
 			    if (tab.length == 3 && tab[0].equals("BTTP")) {
 			    	HOST = tab[1];
-			    	try {
-			    	PORT = Integer.parseInt(tab[2]);
-			    	socket = new Socket(HOST, PORT);
-			    	break;
-			    	} catch( NumberFormatException | IOException  e){ 
-			    		e.printStackTrace();
-			    	}
+					PORT = Integer.parseInt(tab[2]);
+					if(ports.contains(PORT)){
+						try {
+
+							socket = new Socket(HOST, PORT);
+							break;
+						} catch( NumberFormatException | IOException  e){
+							e.printStackTrace();
+						}
+					}
 			    }
-			    System.out.println("re tente svp");
+			    System.out.println("Veuillez saisir une url correcte ");
 		    }
 			
 			System.out.println("Connecté au serveur " + socket.getInetAddress() + ":"+ socket.getPort());
@@ -49,7 +56,7 @@ class Application {
 			while (true) {
 				String recu = sin.readLine() ;
 				if(recu==null) { 
-					System.out.println("le serveur a racrocher\n");
+					System.out.println("le serveur a racroché\n");
 					break;
 				}
 				recu = recu.replace("##", "\n");

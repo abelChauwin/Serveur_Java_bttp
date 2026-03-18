@@ -11,9 +11,13 @@ import java.net.Socket;
 public class ServiceEmprunt extends Service {
 
 	private StringBuffer txt;
+	private StringBuffer consigne;
 
 	public ServiceEmprunt(Socket s, LoadElement element) {
 		super(s,element);
+	}
+	public ServiceEmprunt(Socket s) {
+		super(s);
 	}
 
 	public void run ( ) {
@@ -22,25 +26,36 @@ public class ServiceEmprunt extends Service {
 			BufferedReader sin = new BufferedReader (new InputStreamReader(socket.getInputStream ( )));
 			PrintWriter sout = new PrintWriter (socket.getOutputStream ( ), true);
 
-			txt = new StringBuffer("Bienvenue sur la Borne d'emprunt\nvous pouvez emprunter un document reserver au prealable\npour ce faire tapez: ID_document ID_Abonne");
-
+			txt = new StringBuffer("Bienvenue sur la Borne d'emprunt\nvous pouvez emprunter un document reserver au prealable\n");
+			consigne = new StringBuffer("tapez: ID_document ID_Abonne\"");
+			sout.println(txt.toString().replace("\n", "##"));
+			sout.println(consigne.toString().replace("\n", "##"));
 			while(true) {
-
-				sout.println(txt.toString().replace("\n", "##"));
 				StringBuffer line = new StringBuffer(sin.readLine( ));
+				sout.println(consigne.toString().replace("\n", "##"));
 
 				if (line.toString().isBlank()) {
 					this.socket.close();
-					System.out.println("On raccroche avec le client\n");
+					System.out.println("Deconnexion avec le client\n");
 					break;
 				}
-				// ici effectuer la tache du service
-
-
+				//TODO: ici effectuer la tache du service
+				String[] id = line.toString().split(" ");
+				emprunt(id[0],id[1]);
 
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
+	private void emprunt (String idDocument,String idAbonne) {
+		int idDoc = Integer.parseInt(idDocument);
+		int idAb = Integer.parseInt(idAbonne);
+
+		//TODO: faire la fonction emprunter
+
+
+	}
+
 }

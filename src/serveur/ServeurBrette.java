@@ -12,18 +12,18 @@ public class ServeurBrette implements Runnable {
 	private Class<? extends Service> service;
 	private LoadElement element;
 	
-	public ServeurBrette(Class<? extends Service> clas , int port, LoadElement element) throws IOException {
+	public ServeurBrette(Class<? extends Service> clas , int port) throws IOException {
 			listen_socket = new ServerSocket(port);
 			service=clas;
-			this.element=element;
+
 	}
 
 	public void run() {
 		try {
 			while(true) {
-				System.out.println("J'attends un client...");
+
 				Socket client_socket = listen_socket.accept(); // Appel bloquant !
-				System.out.println("Ca y est ! J'ai un client.");
+				System.out.println("Connexion avec un client ");
 				
 				System.out.print("Adresse IP locale : "+client_socket.getLocalAddress());
 				System.out.println(" Port local : "+client_socket.getLocalPort());
@@ -31,7 +31,7 @@ public class ServeurBrette implements Runnable {
 				System.out.println(" Port distant : "+client_socket.getPort());
 				
 				try {
-					new Thread(service.getConstructor(Socket.class).newInstance(client_socket,element) ).start();
+					new Thread(service.getConstructor(Socket.class).newInstance(client_socket) ).start();
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 					e.printStackTrace();

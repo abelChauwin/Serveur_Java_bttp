@@ -67,9 +67,9 @@ public abstract class DocumentEmpruntable implements Document {
     public synchronized void emprunt(Abonne ab) throws EmpruntException {
 
         if (reserve != EtatReservation.RESERVE ) {
-            throw new EmpruntException("se DVD n'est pas reserver.");
+            throw new EmpruntException("Ce DVD n'est pas reservé.");
         }else if (abonne != ab) {
-            throw new EmpruntException("se DVD est reserver par un autre abonner.");
+            throw new EmpruntException("Ce DVD est reservé par un autre abonné.");
         }
 
         annulerTimers();

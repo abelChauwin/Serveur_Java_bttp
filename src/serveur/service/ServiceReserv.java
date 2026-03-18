@@ -22,7 +22,7 @@ public class ServiceReserv extends Service {
 			BufferedReader sin = new BufferedReader (new InputStreamReader(socket.getInputStream ( )));
 			PrintWriter sout = new PrintWriter (socket.getOutputStream ( ), true);
 			
-			txt = new StringBuffer("Tapez une chaîne de caractères\npetit retour a la ligne pour le flex");
+			txt = new StringBuffer("Tapez une chaîne de caractères\n");
 
 			while(true) {
 			

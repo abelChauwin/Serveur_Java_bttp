@@ -13,6 +13,6 @@ public class DVDS extends DocumentEmpruntable{
     }
     @Override
     public void verificationAbonner(Abonne ab) throws ReservationException {
-        if (ab.getAge()< AGE_ADULTE) { throw new ReservationException("vous n'avez pas l'age d'umprunter se DVD");}
+        if (ab.getAge()< AGE_ADULTE) { throw new ReservationException("vous n'avez pas l'age d'emprunter ce DVD");}
     }
 }

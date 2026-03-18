@@ -12,6 +12,9 @@ public abstract class Service implements Runnable {
 		socket=s;
 		element=element;
 	}
+	public Service(Socket s){
+		socket=s;
+	}
 	
 	public abstract void run ( );
 	
