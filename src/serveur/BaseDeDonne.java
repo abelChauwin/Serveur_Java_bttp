@@ -4,14 +4,15 @@ import serveur.document.DVDS;
 import serveur.document.Document;
 import serveur.document.Livres;
 
-import java.lang.reflect.Array;
+import java.time.chrono.HijrahDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class LoadElement {
+public class BaseDeDonne {
     // class presente pour charger les abonner et les document
 
-    private ArrayList<Abonne> abonnes;
-    private ArrayList<Document> documents;
+    private HashMap<Integer,Abonne> abonnes;
+    private HashMap<String,Document> documents;
 
 
     public static ArrayList<Abonne> loadAbonne(){
@@ -33,12 +34,15 @@ public class LoadElement {
         return tab;
     }
 
-    public  LoadElement(){
-        abonnes = LoadElement.loadAbonne();
-        documents = LoadElement.loadDocument();
+    public BaseDeDonne(){
+        abonnes = new HashMap<>();
+        documents = new HashMap<>();
     }
 
-    public ArrayList<Abonne> getAbonne(){ return abonnes;}
-    public ArrayList<Document> getDocuments(){ return documents;}
+    public void addAbonne(Abonne abonne){abonnes.put(abonne.getId(),abonne);}
+    public void addDocument(Document document){documents.put(document.idDoc(),document);}
+
+    public Abonne getAbonne(int id){ return abonnes.get(id);}
+    public Document getDocuments(String id){ return documents.get(id);}
 
 }

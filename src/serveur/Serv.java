@@ -14,7 +14,7 @@ public class Serv {
 
 	public static void main(String[] args) {
 
-		LoadElement element = new LoadElement(); // la class servant de BD au projet de donner du projet
+		BaseDeDonne element = new BaseDeDonne(); // la class servant de BD au projet de donner du projet
 
 
 		try {
