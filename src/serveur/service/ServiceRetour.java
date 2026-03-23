@@ -2,6 +2,7 @@ package serveur.service;
 
 import serveur.BaseDeDonne;
 import serveur.document.Document;
+import serveur.document.exeption.RetourException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,9 +48,9 @@ public class ServiceRetour extends Service {
 					doc.retour();
 					sout.println("Retour effectué avec succès");
 
-				} catch (Exception e) {
+				} catch (RetourException e) {
 					sout.println("Erreur : " + e.getMessage());
-				}
+				}catch (NumberFormatException e) { sout.println("format des id invalide"); }
 			}
 
 		} catch (IOException e) {

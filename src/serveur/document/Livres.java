@@ -8,7 +8,7 @@ import serveur.document.exeption.RetourException;
 
 public class Livres extends DocumentEmpruntable {
 
-    private int nbPages;
+    private final int nbPages;
 
     public Livres(String id, String titre, int nbPages) {
         super(id,titre);

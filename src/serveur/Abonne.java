@@ -5,9 +5,9 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 public class Abonne {
-    private int id;
-    private String nom;
-    private String dateDeNaissance;
+    private final int id;
+    private final String nom;
+    private final String dateDeNaissance;
 
     private boolean banni;
 

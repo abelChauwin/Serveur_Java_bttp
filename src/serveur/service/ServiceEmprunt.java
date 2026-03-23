@@ -3,6 +3,7 @@ package serveur.service;
 import serveur.Abonne;
 import serveur.BaseDeDonne;
 import serveur.document.Document;
+import serveur.document.exeption.EmpruntException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,8 +13,8 @@ import java.net.Socket;
 
 public class ServiceEmprunt extends Service {
 
-	private StringBuffer txt;
-	private StringBuffer consigne;
+	 StringBuffer txt;
+	 StringBuffer consigne;
 
 	public ServiceEmprunt(Socket s, BaseDeDonne element) {
 		super(s, element);
@@ -72,8 +73,8 @@ public class ServiceEmprunt extends Service {
 			doc.emprunt(ab);
 			return "Emprunt réussi";
 
-		} catch (Exception e) {
+		} catch (EmpruntException e) {
 			return "Erreur : " + e.getMessage();
-		}
+		}catch (NumberFormatException e) { return "format des id invalide"; }
 	}
 }

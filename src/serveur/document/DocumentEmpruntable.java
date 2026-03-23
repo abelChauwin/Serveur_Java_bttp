@@ -14,8 +14,8 @@ public abstract class DocumentEmpruntable implements Document {
     public final static int TEMPS_ATTENTE = 1000 * 60;
     public final static int TEMPS_RETOUR = 1000 * 60 * 60 * 24 * 7 * 2;
 
-    private String id;
-    private String titre;
+    private final String id;
+    private final String titre;
 
     private Abonne abonne;
     private EtatReservation reserve = EtatReservation.LIBRE;

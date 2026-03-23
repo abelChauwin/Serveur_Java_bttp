@@ -3,6 +3,7 @@ package serveur.service;
 import serveur.Abonne;
 import serveur.BaseDeDonne;
 import serveur.document.Document;
+import serveur.document.exeption.ReservationException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,9 +44,10 @@ public class ServiceReserv extends Service {
 				}
 
 				String idDoc = data[0];
-				int idAbonne = Integer.parseInt(data[1]);
+
 
 				try {
+					int idAbonne = Integer.parseInt(data[1]);
 					Document doc = element.getDocument(idDoc);
 					Abonne ab = element.getAbonne(idAbonne);
 
@@ -62,9 +64,9 @@ public class ServiceReserv extends Service {
 					doc.reservation(ab);
 					sout.println("Réservation réussie");
 
-				} catch (Exception e) {
+				} catch (ReservationException e) {
 					sout.println("Erreur : " + e.getMessage());
-				}
+				}catch (NumberFormatException e) { sout.println("format des id invalide"); }
 			}
 
 		} catch (IOException e) {
