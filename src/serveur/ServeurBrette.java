@@ -8,44 +8,38 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServeurBrette implements Runnable {
+
 	private ServerSocket listen_socket;
 	private Class<? extends Service> service;
 	private LoadElement element;
-	
-	public ServeurBrette(Class<? extends Service> clas , int port) throws IOException {
-			listen_socket = new ServerSocket(port);
-			service=clas;
 
+	public ServeurBrette(Class<? extends Service> clas, int port, LoadElement element) throws IOException {
+		listen_socket = new ServerSocket(port);
+		service = clas;
+		this.element = element;
 	}
 
 	public void run() {
 		try {
-			while(true) {
+			while (true) {
 
-				Socket client_socket = listen_socket.accept(); // Appel bloquant !
-				System.out.println("Connexion avec un client ");
-				
-				System.out.print("Adresse IP locale : "+client_socket.getLocalAddress());
-				System.out.println(" Port local : "+client_socket.getLocalPort());
-				System.out.print("Adresse IP distante (client) : "+client_socket.getInetAddress());
-				System.out.println(" Port distant : "+client_socket.getPort());
-				
+				Socket client_socket = listen_socket.accept();
+				System.out.println("Connexion avec un client");
+
 				try {
-					new Thread(service.getConstructor(Socket.class).newInstance(client_socket) ).start();
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					new Thread(
+							service
+									.getConstructor(Socket.class, LoadElement.class)
+									.newInstance(client_socket, element)
+					).start();
+
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+		} catch (IOException e) {
+			try { listen_socket.close(); } catch (IOException ignored) {}
+			System.err.println("Pb sur le port d'écoute :" + e);
 		}
-		catch (IOException e) { 
-			try {this.listen_socket.close();} catch (IOException e1) {}
-			System.err.println("Pb sur le port d'écoute :"+e);
-		}
-	}
-
-	 // restituer les ressources --> finalize
-	protected void finalize() throws Throwable {
-		try {this.listen_socket.close();} catch (IOException e1) {}
 	}
 }

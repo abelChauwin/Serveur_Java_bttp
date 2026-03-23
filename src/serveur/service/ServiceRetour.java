@@ -1,6 +1,7 @@
 package serveur.service;
 
 import serveur.LoadElement;
+import serveur.document.Document;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,35 +11,47 @@ import java.net.Socket;
 
 public class ServiceRetour extends Service {
 
-	private StringBuffer txt;
-
 	public ServiceRetour(Socket s, LoadElement element) {
 		super(s, element);
 	}
 
-	public void run ( ) {
+	public void run() {
 
 		try {
-			BufferedReader sin = new BufferedReader (new InputStreamReader(socket.getInputStream ( )));
-			PrintWriter sout = new PrintWriter (socket.getOutputStream ( ), true);
+			BufferedReader sin = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter sout = new PrintWriter(socket.getOutputStream(), true);
 
-			txt = new StringBuffer("Tapez une chaîne de caractères\npetit retour a la ligne pour le flex");
+			sout.println("Bienvenue sur le service de retour");
+			sout.println("Format: ID_document");
 
-			while(true) {
+			while (true) {
 
-				sout.println(txt.toString().replace("\n", "##"));
-				StringBuffer line = new StringBuffer(sin.readLine( ));
+				String line = sin.readLine();
 
-				if (line.toString().isBlank()) {
-					this.socket.close();
-					System.out.println("On raccroche avec le client\n");
+				if (line == null || line.isBlank()) {
+					socket.close();
+					System.out.println("Connexion fermée");
 					break;
 				}
-				// ici effectuer la tache du service
-				txt = line.reverse();
 
+				String idDoc = line.trim();
 
+				try {
+					Document doc = element.getDocument(idDoc);
+
+					if (doc == null) {
+						sout.println("Document introuvable");
+						continue;
+					}
+
+					doc.retour();
+					sout.println("Retour effectué avec succès");
+
+				} catch (Exception e) {
+					sout.println("Erreur : " + e.getMessage());
+				}
 			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

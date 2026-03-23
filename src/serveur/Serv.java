@@ -7,25 +7,25 @@ import serveur.service.ServiceRetour;
 import java.io.IOException;
 
 public class Serv {
-	
+
 	private final static int PORT_RESERV = 2000;
-	private final static int PORT_EMPRUNT= 2001;
-	private final static int PORT_RETOUR= 2002;
+	private final static int PORT_EMPRUNT = 2001;
+	private final static int PORT_RETOUR = 2002;
 
 	public static void main(String[] args) {
 
-		BaseDeDonne element = new BaseDeDonne(); // la class servant de BD au projet de donner du projet
-
+		LoadElement element = new LoadElement();
 
 		try {
-			new Thread(new ServeurBrette(ServiceReserv.class, PORT_RESERV)).start();
+			new Thread(new ServeurBrette(ServiceReserv.class, PORT_RESERV, element)).start();
 			System.out.println("Serveur reservation demarre sur le port " + PORT_RESERV);
 
-			new Thread(new ServeurBrette(ServiceEmprunt.class, PORT_EMPRUNT)).start();
+			new Thread(new ServeurBrette(ServiceEmprunt.class, PORT_EMPRUNT, element)).start();
 			System.out.println("Serveur emprunt demarre sur le port " + PORT_EMPRUNT);
 
-			new Thread(new ServeurBrette(ServiceRetour.class, PORT_RETOUR)).start();
+			new Thread(new ServeurBrette(ServiceRetour.class, PORT_RETOUR, element)).start();
 			System.out.println("Serveur retour demarre sur le port " + PORT_RETOUR);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
