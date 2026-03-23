@@ -1,7 +1,7 @@
 package serveur.service;
 
-import serveur.LoadElement;
 import serveur.Abonne;
+import serveur.BaseDeDonne;
 import serveur.document.Document;
 
 import java.io.BufferedReader;
@@ -15,7 +15,7 @@ public class ServiceEmprunt extends Service {
 	private StringBuffer txt;
 	private StringBuffer consigne;
 
-	public ServiceEmprunt(Socket s, LoadElement element) {
+	public ServiceEmprunt(Socket s, BaseDeDonne element) {
 		super(s, element);
 	}
 

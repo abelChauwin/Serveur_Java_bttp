@@ -11,9 +11,9 @@ public class ServeurBrette implements Runnable {
 
 	private ServerSocket listen_socket;
 	private Class<? extends Service> service;
-	private LoadElement element;
+	private BaseDeDonne element;
 
-	public ServeurBrette(Class<? extends Service> clas, int port, LoadElement element) throws IOException {
+	public ServeurBrette(Class<? extends Service> clas, int port, BaseDeDonne element) throws IOException {
 		listen_socket = new ServerSocket(port);
 		service = clas;
 		this.element = element;
@@ -29,7 +29,7 @@ public class ServeurBrette implements Runnable {
 				try {
 					new Thread(
 							service
-									.getConstructor(Socket.class, LoadElement.class)
+									.getConstructor(Socket.class, BaseDeDonne.class)
 									.newInstance(client_socket, element)
 					).start();
 

@@ -1,13 +1,13 @@
 package serveur.service;
 
-import serveur.LoadElement;
+import serveur.BaseDeDonne;
 import java.net.Socket;
 
 public abstract class Service implements Runnable {
 	protected Socket socket;
-	protected LoadElement element;
+	protected BaseDeDonne element;
 
-	public Service(Socket s, LoadElement element){
+	public Service(Socket s, BaseDeDonne element){
 		this.socket = s;
 		this.element = element;
 	}

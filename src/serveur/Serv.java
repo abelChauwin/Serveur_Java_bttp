@@ -1,5 +1,6 @@
 package serveur;
 
+import serveur.document.Document;
 import serveur.service.ServiceEmprunt;
 import serveur.service.ServiceReserv;
 import serveur.service.ServiceRetour;
@@ -14,7 +15,8 @@ public class Serv {
 
 	public static void main(String[] args) {
 
-		LoadElement element = new LoadElement();
+		BaseDeDonne element = new BaseDeDonne();
+
 
 		try {
 			new Thread(new ServeurBrette(ServiceReserv.class, PORT_RESERV, element)).start();

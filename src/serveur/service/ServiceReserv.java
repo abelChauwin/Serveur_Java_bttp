@@ -1,7 +1,7 @@
 package serveur.service;
 
-import serveur.LoadElement;
 import serveur.Abonne;
+import serveur.BaseDeDonne;
 import serveur.document.Document;
 
 import java.io.BufferedReader;
@@ -12,7 +12,7 @@ import java.net.Socket;
 
 public class ServiceReserv extends Service {
 
-	public ServiceReserv(Socket s, LoadElement element) {
+	public ServiceReserv(Socket s, BaseDeDonne element) {
 		super(s, element);
 	}
 
