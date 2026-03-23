@@ -11,6 +11,10 @@ public class DVDS extends DocumentEmpruntable{
         super(id,titre);
         this.adulte = adulte;
     }
+    public DVDS(String id, String titre, boolean adulte, int tempsReserv, int tempsAttente, int tempsRetour) {
+        super(id,titre,tempsReserv,tempsAttente,tempsRetour);
+        this.adulte = adulte;
+    }
     @Override
     public void verificationAbonner(Abonne ab) throws ReservationException {
         if (adulte && ab.getAge()< AGE_ADULTE) { throw new ReservationException("vous n'avez pas l'age d'emprunter ce DVD");}

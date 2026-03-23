@@ -17,6 +17,10 @@ public abstract class DocumentEmpruntable implements Document {
     private final String id;
     private final String titre;
 
+    private final int tempsReserv;
+    private final int tempsAttente;
+    private final int tempsRetour;
+
     private Abonne abonne;
     private EtatReservation reserve = EtatReservation.LIBRE;
 
@@ -37,7 +41,17 @@ public abstract class DocumentEmpruntable implements Document {
     public DocumentEmpruntable(String id, String titre) {
         this.id = id;
         this.titre = titre;
-        planifierExpiration();
+        tempsReserv = TEMPS_RESERV;
+        tempsAttente = TEMPS_ATTENTE;
+        tempsRetour = TEMPS_RETOUR;
+    }
+
+    public DocumentEmpruntable(String id, String titre, int tempsReserv, int tempsAttente, int tempsRetour) {
+        this.id = id;
+        this.titre = titre;
+        this.tempsReserv = tempsReserv;
+        this.tempsAttente = tempsAttente;
+        this.tempsRetour = tempsRetour;
     }
 
     @Override
@@ -57,7 +71,27 @@ public abstract class DocumentEmpruntable implements Document {
         if (reserve == EtatReservation.LIBRE) {
             abonne = ab;
             reserve = EtatReservation.RESERVE;
-            timer.schedule(taskReservation, TEMPS_RESERV - TEMPS_ATTENTE);
+
+            taskReservation = new TimerTask() {
+                @Override
+                public void run() {
+                    synchronized (DocumentEmpruntable.this) {
+                        reserve = EtatReservation.EN_ATTENTE_FIN;
+                        taskAttente = new TimerTask() {
+                            @Override
+                            public void run() {
+                                synchronized (DocumentEmpruntable.this) {
+                                    reserve = EtatReservation.LIBRE;
+                                    abonne = null;
+                                    DocumentEmpruntable.this.notifyAll();
+                                }
+                            }
+                        };
+                        timer.schedule(taskAttente, tempsAttente);
+                    }
+                }
+            };
+            timer.schedule(taskReservation, tempsReserv - tempsAttente);
         }else if (reserve == EtatReservation.EMPRUNTER || reserve == EtatReservation.RESERVE) {
             throw new ReservationException("Le DVD n'est pas disponible.");
         }
@@ -74,7 +108,7 @@ public abstract class DocumentEmpruntable implements Document {
 
         annulerTimers();
         reserve = EtatReservation.EMPRUNTER;
-
+        notifyAll();
 
         taskRetour = new TimerTask() {
             @Override
@@ -82,7 +116,7 @@ public abstract class DocumentEmpruntable implements Document {
                 ab.bannir();
             }
         };
-        timer.schedule(taskRetour, TEMPS_RETOUR );
+        timer.schedule(taskRetour, tempsRetour );
     }
 
     @Override
@@ -96,41 +130,16 @@ public abstract class DocumentEmpruntable implements Document {
         abonne = null;
     }
 
-
-    private void planifierExpiration() {
-
-        taskReservation = new TimerTask() {
-            @Override
-            public void run() {
-                synchronized (DocumentEmpruntable.this) {
-
-                    reserve = EtatReservation.EN_ATTENTE_FIN;
-
-                    taskAttente = new TimerTask() {
-                        @Override
-                        public void run() {
-                            synchronized (DocumentEmpruntable.this) {
-                                reserve = EtatReservation.LIBRE;
-                                abonne = null;
-                                notifyAll();
-                            }
-                        }
-                    };
-
-                    timer.schedule(taskAttente, TEMPS_ATTENTE);
-                }
-            }
-        };
-    }
-
     private void annulerTimers() {
-            taskReservation.cancel();
-            taskAttente.cancel();
+        if(taskAttente != null) {taskAttente.cancel();}
+        if(taskReservation != null){taskReservation.cancel();}
     }
     @Override
-    public String idDoc() {
-        return id;
-    }
+    public String idDoc() {return id;}
+    public Abonne getAbonne() {return abonne;}
+    public EtatReservation getEtat() {return reserve;}
+    public String getTitre() {return titre;}
+    public Timer getTimer() {return timer;}
 
     public abstract void verificationAbonner(Abonne ab) throws ReservationException;
 

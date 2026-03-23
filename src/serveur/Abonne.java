@@ -9,11 +9,10 @@ public class Abonne {
     private final String nom;
     private final String dateDeNaissance;
 
-    private boolean banni;
+    private LocalDate dateFinBannissement;
 
     private static final String FORMAT ="dd-MM-yyyy";
 
-    // Constructeur
     public Abonne(int id, String nom, String dateDeNaissance) {
         this.id = id;
         this.nom = nom;
@@ -23,6 +22,7 @@ public class Abonne {
     public int getId() {
         return id;
     }
+
     public String getNom() {
         return nom;
     }
@@ -34,10 +34,21 @@ public class Abonne {
     }
 
     public boolean banni() {
-        return banni;
+        if (dateFinBannissement == null) {
+            return false;
+        }
+        return LocalDate.now().isBefore(dateFinBannissement);
     }
 
+
     public void bannir() {
-        banni=true;
+        dateFinBannissement = LocalDate.now().plusMonths(1);
+    }
+
+    public LocalDate getDateFinBannissement() {
+        return dateFinBannissement;
+    }
+    public void setDateFinBannissement(LocalDate date) { // afin de tester
+        this.dateFinBannissement = date;
     }
 }
