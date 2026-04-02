@@ -6,6 +6,7 @@ import serveur.service.ServiceReserv;
 import serveur.service.ServiceRetour;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class Serv {
 
@@ -19,6 +20,14 @@ public class Serv {
 
 
 		try {
+			//Si l'usager est sur une version externe de l'appli, on peut imaginer que le port est automatiquement saisie et redirigier vers le service reservation
+			if(Objects.equals(args[1], String.valueOf(PORT_RESERV))){
+				new Thread(new ServeurBrette(ServiceReserv.class, PORT_RESERV, element)).start();
+				System.out.println("Serveur reservation demarre sur le port " + PORT_RESERV);
+			}
+
+			//partie médiathèque
+
 			new Thread(new ServeurBrette(ServiceReserv.class, PORT_RESERV, element)).start();
 			System.out.println("Serveur reservation demarre sur le port " + PORT_RESERV);
 
