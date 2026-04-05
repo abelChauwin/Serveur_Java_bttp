@@ -5,7 +5,7 @@ import serveur.document.exeption.EmpruntException;
 import serveur.document.exeption.ReservationException;
 import serveur.document.exeption.RetourException;
 
-public interface IDocument {
+public interface Document {
     String idDoc();
     // exception si déjà réservé ou emprunté
     void reservation (Abonne ab) throws ReservationException;

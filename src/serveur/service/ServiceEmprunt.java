@@ -2,7 +2,7 @@ package serveur.service;
 
 import serveur.Abonne;
 import serveur.BaseDeDonne;
-import serveur.document.IDocument;
+import serveur.document.Document;
 import serveur.document.exeption.EmpruntException;
 
 import java.io.BufferedReader;
@@ -64,7 +64,7 @@ public class ServiceEmprunt extends Service {
 	private String emprunt(String idDocument, String idAbonne) {
 
 		try {
-			IDocument doc = element.getDocument(idDocument);
+			Document doc = element.getDocument(idDocument);
 			Abonne ab = element.getAbonne(Integer.parseInt(idAbonne));
 
 			if (doc == null) return "Document introuvable";
