@@ -1,7 +1,7 @@
 package serveur.service;
 
 import serveur.BaseDeDonne;
-import serveur.document.Document;
+import serveur.document.IDocument;
 import serveur.document.exeption.RetourException;
 
 import java.io.BufferedReader;
@@ -38,7 +38,7 @@ public class ServiceRetour extends Service {
 				String idDoc = line.trim();
 
 				try {
-					Document doc = element.getDocument(idDoc);
+					IDocument doc = element.getDocument(idDoc);
 
 					if (doc == null) {
 						sout.println("Document introuvable");

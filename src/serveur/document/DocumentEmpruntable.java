@@ -8,7 +8,7 @@ import serveur.document.exeption.RetourException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public abstract class DocumentEmpruntable implements Document {
+public abstract class DocumentEmpruntable implements IDocument {
 
     public final static int TEMPS_RESERV = 1000 * 60 * 60 * 2;
     public final static int TEMPS_ATTENTE = 1000 * 60;

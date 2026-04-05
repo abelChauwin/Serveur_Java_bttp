@@ -1,7 +1,7 @@
 package serveur;
 
 import serveur.document.DVDS;
-import serveur.document.Document;
+import serveur.document.IDocument;
 import serveur.document.Livres;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ public class BaseDeDonne {
     // class presente pour charger les abonner et les document
 
     private final HashMap<Integer,Abonne> abonnes;
-    private final HashMap<String,Document> documents;
+    private final HashMap<String, IDocument> documents;
 
 
     public void loadAbonne(){ //dans une vrai app, on lirait la BD ici
@@ -32,9 +32,9 @@ public class BaseDeDonne {
     }
 
     public void addAbonne(Abonne abonne){abonnes.put(abonne.getId(),abonne);}
-    public void addDocument(Document document){documents.put(document.idDoc(),document);}
+    public void addDocument(IDocument document){documents.put(document.idDoc(),document);}
 
     public Abonne getAbonne(int id){ return abonnes.get(id);}
-    public Document getDocument(String id){ return documents.get(id);}
+    public IDocument getDocument(String id){ return documents.get(id);}
 
 }

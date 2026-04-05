@@ -2,7 +2,7 @@ package serveur.service;
 
 import serveur.Abonne;
 import serveur.BaseDeDonne;
-import serveur.document.Document;
+import serveur.document.IDocument;
 import serveur.document.exeption.ReservationException;
 
 import java.io.BufferedReader;
@@ -48,7 +48,7 @@ public class ServiceReserv extends Service {
 
 				try {
 					int idAbonne = Integer.parseInt(data[1]);
-					Document doc = element.getDocument(idDoc);
+					IDocument doc = element.getDocument(idDoc);
 					Abonne ab = element.getAbonne(idAbonne);
 
 					if (doc == null) {
